@@ -11,7 +11,7 @@ def registerUser(request):
             print("User email : " + formObj.cleaned_data["email"])
             print("User password : " + formObj.cleaned_data["password1"])
             formObj.save()
-            return redirect("blog-home")
+            return redirect("login")
     else:
         formObj = RegisterForm()
     return render(request, "users/register.html", {"form": formObj})
