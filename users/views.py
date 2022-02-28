@@ -1,5 +1,6 @@
+from turtle import home
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
+from .forms import RegisterForm, UserUpdationForm, ProfileUpdationform
 from django.contrib.auth.decorators import login_required
 
 
@@ -19,4 +20,19 @@ def registerUser(request):
 
 @login_required(login_url='login')
 def profile(request):
-    return render(request, "users/profile.html")
+    if request.method == "POST":
+        u_form = UserUpdationForm(request.POST, instance=request.user)
+        p_form = ProfileUpdationform(
+            request.POST, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect("profile")
+    else:
+        u_form = UserUpdationForm(instance=request.user)
+        p_form = ProfileUpdationform(instance=request.user.profile)
+    context = {
+        "u_form": u_form,
+        "p_form": p_form
+    }
+    return render(request, "users/profile.html", context)
