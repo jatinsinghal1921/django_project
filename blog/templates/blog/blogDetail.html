@@ -2,7 +2,7 @@
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <span class="mr-2">{{ post.author }}</span>
+      <a class="mr-2" href="{% url 'specific-user-blogs' post.author %}">{{ post.author }}</a>
       <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
     </div>
     <h2 class="article-title">{{ post.title }}</h2>

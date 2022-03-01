@@ -2,12 +2,13 @@
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">{{ page.author }}</a>
+      <a class="mr-2" href="{% url 'specific-user-blogs' page.author %}">{{ page.author }}</a>
       <small class="text-muted">{{ page.date_posted|date:"F d, Y" }}</small>
     </div>
     <h4>
       <a class="article-title" href="{% url 'blog-detail' page.id %}">{{ page }}</a>
     </h4>
+    <p class="article-content">{{ page.content|truncatewords:50 }}</p>
   </div>
 </article>
 {% endfor %}
@@ -45,4 +46,5 @@
     </li>
   </ul>
 </nav>
+<br>
 {% endblock content %}

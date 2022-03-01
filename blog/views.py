@@ -8,14 +8,23 @@ from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage
 from django.core.exceptions import SuspiciousOperation
+from django.contrib.auth.models import User
 
 
 def home(request):
     posts = Post.objects.all().order_by('-date_posted')
-    paginator = Paginator(posts, 6)
+    paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(page_obj)
+    return render(request, "blog/home.html", {"page_obj": page_obj})
+
+
+def specificUserBlogs(request, username):
+    userObj = User.objects.get(username=username)
+    posts = Post.objects.filter(author=userObj).order_by('-date_posted')
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, "blog/home.html", {"page_obj": page_obj})
 
 
