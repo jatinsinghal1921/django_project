@@ -2,6 +2,7 @@ from turtle import home
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, UserUpdationForm, ProfileUpdationform
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
 
 def registerUser(request):
@@ -12,7 +13,10 @@ def registerUser(request):
             print("User email : " + formObj.cleaned_data["email"])
             print("User password : " + formObj.cleaned_data["password1"])
             formObj.save()
-            return redirect("login")
+            new_user = authenticate(
+                username=formObj.cleaned_data['username'], password=formObj.cleaned_data['password1'])
+            login(request, new_user)
+            return redirect("blog-home")
     else:
         formObj = RegisterForm()
     return render(request, "users/register.html", {"form": formObj})
